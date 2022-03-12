@@ -1,5 +1,7 @@
-import './css/index.css'
+import './css/base.css'
+import './css/index.less'
 import './css/main.less'
+import './css/style.scss'
 import * as bjs from './b.js'
 import * as $utils from './utils/common.js'
 console.log('加载index.js文件', $utils.sayHello())

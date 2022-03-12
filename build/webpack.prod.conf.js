@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin"); // 压缩css
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin"); // 压缩js webpack5用terser-webpack-plugin替代uglifyjs-webpack-plugin【因为不支持es6】
 const baseWebpackConfig = require('./webpack.base.conf.js')
 
@@ -14,6 +15,13 @@ const webpackConfig = merge(baseWebpackConfig, {
         new webpack.DefinePlugin({
             'process.env': require('../config/dev.env')
         }),
+        new CopyWebpackPlugin([ // 谢绝10.2.4版本，当public无文件时报错
+            {
+                from: 'public',
+                to: path.resolve(baseWebpackConfig.output.path, 'public'),
+                // ignore: ['.*']
+            }
+        ])
         // new webpack.HotModuleReplacementPlugin(),
         // new webpack.NamedModulesPlugin(), // HMR shows correct file names in console on update.
         // new webpack.NoEmitOnErrorsPlugin(),
@@ -24,13 +32,6 @@ const webpackConfig = merge(baseWebpackConfig, {
         //     inject: true
         // }),
         // // copy custom static assets
-        // new CopyWebpackPlugin([
-        //     {
-        //         from: path.resolve(__dirname, '../static'),
-        //         to: config.dev.assetsSubDirectory,
-        //         ignore: ['.*']
-        //     }
-        // ])
     ],
     optimization: {
         minimize: true,

@@ -7,12 +7,14 @@ const devMode = process.env.NODE_ENV !== 'production'; // 判断当前环境是�
 let cssRule = [
     MiniCssExtractPlugin.loader, // 样式表抽离成专门的单独文件并且设置版本号
     {
+        // 将 CSS 转化成 CommonJS 模块
         loader: 'css-loader',
         options: {
             sourceMap: devMode
         }
     },
     {
+        // 结合postcss-preset-env添加css前缀
         loader: 'postcss-loader',
         options: {
             sourceMap: devMode,
@@ -42,9 +44,11 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(sa|sc)ss$/,
+                test: /\.s[ac]ss$/i,
                 use: [
                     ...cssRule,
+                    // 这里使用 sass 、 sass-loader来变编译scss
+                    // 而不是之前的 node-sass、sass-loader 组合，因为node-sass在macOSX系统上 因为m1芯片上不兼容X86会报错
                     {
                         loader: 'sass-loader',
                         options: {
