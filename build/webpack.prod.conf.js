@@ -11,7 +11,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     mode: 'production',
     // devtool: 'source-map',
     plugins: [
-        new CleanWebpackPlugin(),
+        // new CleanWebpackPlugin(),
         new webpack.DefinePlugin({
             'process.env': require('../config/dev.env')
         }),

@@ -2,6 +2,9 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // 抽离css为单独文件
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // 可以把打包后的 CSS 或者 JS 文件引用直接注入到 HTML 模板中，这样就不用每次手动修改文件引用了。
 
+// 自定义插件
+const MyPlugin = require('./myPlugin')
+
 const devMode = process.env.NODE_ENV !== 'production'; // 判断当前环境是开发环境还是 部署环境，主要是 mode属性的设置值。
 
 let cssRule = [
@@ -33,7 +36,8 @@ module.exports = {
     entry: './src/index.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, '../dist')
+        path: path.resolve(__dirname, '../dist'),
+        clean: true, // 在生成文件之前清空 output 目录- webpack 5.20.0+后才有此属性
     },
     module: {
         rules: [
@@ -79,6 +83,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new MyPlugin({myParam: '参数'}),
         new MiniCssExtractPlugin({
             filename: devMode ? '[name].css' : '[name].[hash].css', // 设置最终输出的文件名
             chunkFilename: devMode ? '[id].css' : '[id].[hash].css'
