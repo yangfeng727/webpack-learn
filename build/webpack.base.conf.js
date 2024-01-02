@@ -79,6 +79,28 @@ module.exports = {
                 use: {
                     loader: 'babel-loader'
                 }
+            },
+            { // webpack5后可以不用之前的url-loader了，有个Resource 模块
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: [
+                    {
+                        loader: 'url-loader', // url-loader 包含file-loader
+                        options: {
+                            limit: 10000
+                        }
+                    }
+                ]
+            }, {
+                test: /\.(png|svg|jpg|gif|jpeg|ico)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 1024*50,// 小于50k转base64
+                            name:'img/[name].[hash:8].[ext]'
+                        }
+                    }
+                ]
             }
         ]
     },
